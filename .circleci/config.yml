@@ -1,0 +1,26 @@
+version: 2.1
+
+jobs:
+  bashenv-proof:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - checkout
+      - run:
+          name: Seed BASH_ENV identity override
+          command: |
+            echo 'export VM4_BASHENV_CANARY=vm4-bashenv-crossstep-261007' >> "$BASH_ENV"
+            echo 'export CIRCLE_REPOSITORY_URL=https://github.com/vm4-oc12-mfy-20260929/vm4-dep-trusted-260930.git' >> "$BASH_ENV"
+            echo "seeded-bashenv"
+      - run:
+          name: Verify next-step identity
+          command: |
+            test "$VM4_BASHENV_CANARY" = "vm4-bashenv-crossstep-261007"
+            test "$CIRCLE_REPOSITORY_URL" = "https://github.com/vm4-oc12-mfy-20260929/vm4-dep-trusted-260930.git"
+            printf 'CANARY=%s\n' "$VM4_BASHENV_CANARY"
+            printf 'REPO=%s\n' "$CIRCLE_REPOSITORY_URL"
+
+workflows:
+  bashenv-proof:
+    jobs:
+      - bashenv-proof

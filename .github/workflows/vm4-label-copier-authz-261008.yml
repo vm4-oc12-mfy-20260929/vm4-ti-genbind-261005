@@ -1,0 +1,19 @@
+name: VM4 label copier authz 261008
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  copy-labels:
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Mergify merge queue labels copier
+        uses: Mergifyio/gha-mergify-merge-queue-labels-copier@afe05531f8d5798ddad25b53dec94c722792f724
+        with:
+          labels: vm4-label-approved-261008
+          token: ${{ github.token }}
